@@ -4,22 +4,12 @@ import '../pages/product_details.page.dart';
 import '../providers/product.model.dart';
 
 class ProductItem extends StatelessWidget {
-  // final String id;
-  // final String title;
-  // final String imageUrl;
-  // final double price;
-  // const ProductItem({
-  //   super.key,
-  //   required this.id,
-  //   required this.title,
-  //   required this.imageUrl,
-  //   required this.price,
-  // });
-
   const ProductItem({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //don't listen for whole widgets - listen false
+    // but it will listen where required through Consumer
     final product = Provider.of<Product>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -29,14 +19,21 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
             backgroundColor: Colors.black87,
-            leading: IconButton(
+
+            // consume updates only where you want
+            //and only this widget will be rebuilt
+
+            leading: Consumer<Product>(
+              builder: (ctx, prod, child) => IconButton(
                 onPressed: () {
                   product.toggleFavoriteStatus();
                 },
                 color: Theme.of(context).primaryColor,
                 icon: Icon(product.isFavorite
                     ? Icons.favorite
-                    : Icons.favorite_border)),
+                    : Icons.favorite_border),
+              ),
+            ),
             trailing: IconButton(
                 onPressed: () {},
                 color: Theme.of(context).primaryColor,
