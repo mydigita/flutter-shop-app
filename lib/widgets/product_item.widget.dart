@@ -41,7 +41,7 @@ class ProductItem extends StatelessWidget {
                   cart.addItem(product.id, product.title, product.price);
                 },
                 color: Theme.of(context).primaryColor,
-                icon: const Icon(Icons.shopping_cart)),
+                icon: const Icon(Icons.shopping_cart_outlined)),
             title: Text(
               product.title,
               textAlign: TextAlign.center,

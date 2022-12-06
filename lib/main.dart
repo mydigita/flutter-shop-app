@@ -4,6 +4,7 @@ import './pages/product_overview.page.dart';
 import './pages/product_details.page.dart';
 import './providers/products_provider.dart';
 import './providers/cart_provider.dart';
+import './pages/cart_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,8 +25,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.pink),
         home: const ProductsOverviewPage(),
         routes: {
-          ProductDetailsPage.routeName: ((context) =>
-              const ProductDetailsPage())
+          ProductDetailsPage.routeName: (context) => const ProductDetailsPage(),
+          CartPage.routeName: (context) => const CartPage(),
         },
       ),
     );
