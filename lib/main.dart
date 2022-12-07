@@ -5,6 +5,7 @@ import './pages/product_details.page.dart';
 import './providers/products_provider.dart';
 import './providers/cart_provider.dart';
 import './pages/cart_page.dart';
+import './providers/order_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (ctx) => Products()),
         ChangeNotifierProvider(create: (ctx) => Cart()),
+        ChangeNotifierProvider(create: (ctx) => Orders()),
       ],
       child: MaterialApp(
         title: 'flutter-shop-app',
