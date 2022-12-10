@@ -7,6 +7,8 @@ import './providers/cart_provider.dart';
 import './pages/cart_page.dart';
 import './providers/order_provider.dart';
 import './pages/order_page.dart';
+import './pages/user_product_page.dart';
+import './pages/edit_product.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
           ProductDetailsPage.routeName: (context) => const ProductDetailsPage(),
           CartPage.routeName: (context) => const CartPage(),
           OrderPage.routeName: (context) => const OrderPage(),
+          UserProductPage.routeName: (context) => const UserProductPage(),
+          EditProductPage.routeName: (context) => const EditProductPage(),
         },
       ),
     );
