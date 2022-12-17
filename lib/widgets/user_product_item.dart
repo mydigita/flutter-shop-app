@@ -19,7 +19,19 @@ class UserProductItem extends StatelessWidget {
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+
+          // if image url does not work, load a sample image from app assets
+          errorBuilder:
+              (BuildContext context, Object error, StackTrace? stackTrace) {
+            return Image.asset(
+              'assets/images/image_not_found.jpg',
+              fit: BoxFit.cover,
+            );
+          },
+        ),
       ),
       trailing: Container(
         width: 100,

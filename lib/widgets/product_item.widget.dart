@@ -66,6 +66,15 @@ class ProductItem extends StatelessWidget {
           child: Image.network(
             product.imageUrl,
             fit: BoxFit.cover,
+
+            // if image url does not work, load a sample image from app assets
+            errorBuilder:
+                (BuildContext context, Object error, StackTrace? stackTrace) {
+              return Image.asset(
+                'assets/images/image_not_found.jpg',
+                fit: BoxFit.cover,
+              );
+            },
           ),
         ),
       ),

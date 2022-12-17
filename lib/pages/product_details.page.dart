@@ -29,6 +29,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               child: Image.network(
                 loadedProduct.imageUrl,
                 fit: BoxFit.cover,
+
+                // if image url does not work, load a sample image from app assets
+                errorBuilder: (BuildContext context, Object error,
+                    StackTrace? stackTrace) {
+                  return Image.asset(
+                    'assets/images/image_not_found.jpg',
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
             const SizedBox(height: 10),
