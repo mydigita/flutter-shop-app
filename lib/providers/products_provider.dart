@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import './product.model.dart';
 import 'package:http/http.dart' as http;
+import '../models/http_exception.model.dart';
+import './product.model.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -53,8 +54,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://replace_this_line_with_your_firebase_app_url_here.firebaseio.com/products.json';
+    const url = 'https://your_own_url_here.firebaseio.com/products.json';
     try {
       final response = await http.get(Uri.parse(url));
       final serverJsonData = json.decode(response.body) as Map<String, dynamic>;
@@ -77,8 +77,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url =
-        'https://replace_this_line_with_your_firebase_app_url_here.firebaseio.com/products.json';
+    const url = 'https://your_own_url_here.firebaseio.com/products.json';
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -108,8 +107,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((product) => product.id == id);
     if (productIndex >= 0) {
-      final url =
-          'https://replace_this_line_with_your_firebase_app_url_here.firebaseio.com/products/$id.json';
+      final url = 'https://your_own_url_here.firebaseio.com/products/$id.json';
       await http.patch(Uri.parse(url),
           body: json.encode({
             'title': newProduct.title,
@@ -122,8 +120,21 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProductById(String id) {
-    _items.removeWhere((product) => product.id == id);
+  Future<void> deleteProductById(String id) async {
+    final url = 'https://your_own_url_here.firebaseio.com/products/$id.json';
+    final existingProductIndex =
+        _items.indexWhere((product) => product.id == id);
+    var existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      // if db operation fails, restore the removed product in local memory
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Delete operation failed!');
+    }
+    // existingProduct = null;
   }
 }
