@@ -10,6 +10,7 @@ import '../pages/cart_page.dart';
 enum FilterOptions { favorites, all }
 
 class ProductsOverviewPage extends StatefulWidget {
+  static const routeName = '/product-overview';
   const ProductsOverviewPage({super.key});
 
   @override

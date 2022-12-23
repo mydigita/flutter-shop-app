@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +42,10 @@ class Products with ChangeNotifier {
     // ),
   ];
 
+  final String authTokent;
+
+  Products(this.authTokent, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -54,7 +59,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://your_own_url_here.firebaseio.com/products.json';
+    final url =
+        'https://replace_this_with_your_url.firebaseio.com/products.json?auth=$authTokent';
     try {
       final response = await http.get(Uri.parse(url));
       final serverJsonData = json.decode(response.body) as Map<String, dynamic>;
@@ -72,12 +78,16 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
+      if (error is SocketException) {
+        return;
+      }
       rethrow;
     }
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://your_own_url_here.firebaseio.com/products.json';
+    final url =
+        'https://replace_this_with_your_url.firebaseio.com/products.json?auth=$authTokent';
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -107,7 +117,8 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((product) => product.id == id);
     if (productIndex >= 0) {
-      final url = 'https://your_own_url_here.firebaseio.com/products/$id.json';
+      final url =
+          'https://replace_this_with_your_url.firebaseio.com/products/$id.json?auth=$authTokent';
       await http.patch(Uri.parse(url),
           body: json.encode({
             'title': newProduct.title,
@@ -121,7 +132,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProductById(String id) async {
-    final url = 'https://your_own_url_here.firebaseio.com/products/$id.json';
+    final url =
+        'https://replace_this_with_your_url.firebaseio.com/products/$id.json?auth=$authTokent';
     final existingProductIndex =
         _items.indexWhere((product) => product.id == id);
     var existingProduct = _items[existingProductIndex];
