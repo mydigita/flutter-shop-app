@@ -32,10 +32,10 @@ class Product with ChangeNotifier {
       final url =
           'https://replace_this_with_your_url.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
 
-      final response = await http.patch(Uri.parse(url),
-          body: json.encode({
-            'isFavorite': isFavorite,
-          }));
+      final response = await http.put(Uri.parse(url),
+          body: json.encode(
+            isFavorite,
+          ));
 
       if (response.statusCode != 200) {
         _setFavoriteValue(oldStatus);

@@ -1,4 +1,4 @@
-// import 'dart.math';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -33,44 +33,46 @@ class AuthPage extends StatelessWidget {
             ),
           ),
           SingleChildScrollView(
-            child: Container(
-              color: null,
-              height: deviceSize.height * .8,
-              width: deviceSize.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 14.0,
-                        horizontal: 90.0,
-                      ),
-                      transform: transformConfig,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).primaryColor,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 10,
-                            color: Colors.black26,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Text(
-                        'Welcome!',
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
+            child: Center(
+              child: Container(
+                color: null,
+                height: deviceSize.height * .8,
+                width: max(300, 400),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 20.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 14.0,
+                          horizontal: 90.0,
+                        ),
+                        transform: transformConfig,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Theme.of(context).primaryColor,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 10,
+                              color: Colors.black26,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          'Welcome!',
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: const AuthCard(),
-                  ),
-                ],
+                    Flexible(
+                      flex: deviceSize.width > 600 ? 2 : 1,
+                      child: const AuthCard(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

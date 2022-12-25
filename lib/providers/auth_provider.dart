@@ -27,7 +27,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url = Uri.parse(
-        'https://replace_this_with_your_url.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDaOCVyoY1X_yzB55BEeMfpXjllTn2pY40');
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=replace_this_with_your_API_key_from_firebase');
 
     try {
       final response = await http.post(
