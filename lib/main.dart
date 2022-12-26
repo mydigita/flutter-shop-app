@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import '../pages/splash_page.dart';
 import '../providers/auth_provider.dart';
 import './pages/product_overview.page.dart';
 import './pages/product_details.page.dart';
@@ -33,9 +34,10 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(create: (contex) => Cart()),
           ChangeNotifierProxyProvider<Auth, Orders>(
-              create: ((context) => Orders('', [])),
+              create: ((context) => Orders('', '', [])),
               update: ((context, authValue, previousOrder) => Orders(
                   authValue.token,
+                  authValue.userId,
                   previousOrder == null ? [] : previousOrder.orders))),
         ],
         child: Consumer<Auth>(
@@ -44,7 +46,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(primarySwatch: Colors.pink),
             home: authValue.isAuth
                 ? const ProductsOverviewPage()
-                : const AuthPage(),
+                : FutureBuilder(
+                    future: authValue.tryAutoLogin(),
+                    builder: ((context, snapshot) =>
+                        snapshot.connectionState == ConnectionState.waiting
+                            ? const SplashPage()
+                            : const AuthPage())),
             routes: {
               ProductDetailsPage.routeName: (context) =>
                   const ProductDetailsPage(),
