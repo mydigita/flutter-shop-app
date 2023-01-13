@@ -19,31 +19,33 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         Provider.of<Products>(context, listen: false).findById(productId);
 
     return Scaffold(
-      appBar: AppBar(title: Text(loadedProduct.title)),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: null,
-              height: 300,
-              child: Image.network(
-                loadedProduct.imageUrl,
-                fit: BoxFit.cover,
-
-                // if image url does not work, load a sample image from app assets
-                errorBuilder: (BuildContext context, Object error,
-                    StackTrace? stackTrace) {
-                  return Image.asset(
-                    'assets/images/image_not_found.jpg',
-                    fit: BoxFit.cover,
-                  );
-                },
+      // appBar: AppBar(title: Text(loadedProduct.title)),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(loadedProduct.title),
+              background: Hero(
+                tag: loadedProduct.id,
+                child: FadeInImage(
+                  // load a local image if product image delayed to load
+                  placeholder:
+                      const AssetImage('assets/images/image_not_found.jpg'),
+                  image: NetworkImage(loadedProduct.imageUrl),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
             const SizedBox(height: 10),
             Text(
               '\$ ${loadedProduct.price}',
               style: const TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Container(
@@ -55,8 +57,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 softWrap: true,
               ),
             ),
-          ],
-        ),
+            const SizedBox(
+              height: 1000,
+            )
+          ])),
+        ],
       ),
     );
   }

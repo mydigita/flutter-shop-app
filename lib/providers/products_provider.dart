@@ -27,16 +27,15 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final filterString =
+    final String filterString =
         filterByUser ? 'orderBy="ownerId"&equalTo="$userId"' : '';
-    final url =
+    final String url =
         'https://replace_this_with_your_url.firebaseio.com/products.json?auth=$authToken&$filterString';
+
     try {
-      final response = await http.get(Uri.parse(url));
-      final serverJsonData = json.decode(response.body) as Map<String, dynamic>;
-      if (serverJsonData.isEmpty) {
-        return;
-      }
+      var response = await http.get(Uri.parse(url));
+      var serverJsonData = json.decode(response.body) as Map<String, dynamic>;
+
       final favoriteUrl =
           'https://replace_this_with_your_url.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
       final favoriteResponse = await http.get(Uri.parse(favoriteUrl));
@@ -59,7 +58,6 @@ class Products with ChangeNotifier {
       if (error is SocketException) {
         return;
       }
-      rethrow;
     }
   }
 
@@ -88,7 +86,7 @@ class Products with ChangeNotifier {
       _items.insert(0, newProduct);
       notifyListeners();
     } catch (error) {
-      rethrow;
+      return;
     }
   }
 

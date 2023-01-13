@@ -68,18 +68,15 @@ class ProductItem extends StatelessWidget {
               arguments: product.id,
             );
           },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-
-            // if image url does not work, load a sample image from app assets
-            errorBuilder:
-                (BuildContext context, Object error, StackTrace? stackTrace) {
-              return Image.asset(
-                'assets/images/image_not_found.jpg',
-                fit: BoxFit.cover,
-              );
-            },
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              // load a local image if product image delayed to load
+              placeholder:
+                  const AssetImage('assets/images/image_not_found.jpg'),
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

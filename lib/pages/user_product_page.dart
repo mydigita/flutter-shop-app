@@ -16,7 +16,6 @@ class UserProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final productData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your products'),
@@ -32,32 +31,38 @@ class UserProductPage extends StatelessWidget {
       drawer: const AppDrawer(),
       body: FutureBuilder(
         future: _refreshProducts(context),
-        builder: (ctx, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : RefreshIndicator(
-                    onRefresh: () => _refreshProducts(context),
-                    child: Consumer<Products>(
-                      builder: (ctx, productData, _) => Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ListView.builder(
-                          itemCount: productData.items.length,
-                          itemBuilder: (_, index) => Column(
-                            children: [
-                              UserProductItem(
-                                id: productData.items[index].id,
-                                title: productData.items[index].title,
-                                imageUrl: productData.items[index].imageUrl,
-                              ),
-                              const Divider(),
-                            ],
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: () => _refreshProducts(context),
+                child: Consumer<Products>(
+                  builder: (ctx, productData, _) => productData.items.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ListView.builder(
+                            itemCount: productData.items.length,
+                            itemBuilder: (_, index) => Column(
+                              children: [
+                                UserProductItem(
+                                  id: productData.items[index].id,
+                                  title: productData.items[index].title,
+                                  imageUrl: productData.items[index].imageUrl,
+                                ),
+                                const Divider(),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : const Center(
+                          child: Text(
+                          'You have no product!',
+                          style: TextStyle(fontSize: 18, color: Colors.red),
+                        )),
+                ),
+              ),
       ),
     );
   }

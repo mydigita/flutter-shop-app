@@ -20,13 +20,12 @@ class UserProductItem extends StatelessWidget {
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
-        child: Image.network(
-          imageUrl,
+        child: FadeInImage(
+          // load a local image if product image delayed to load
+          placeholder: const AssetImage('assets/images/image_not_found.jpg'),
+          image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
-
-          // if image url does not work, load a sample image from app assets
-          errorBuilder:
-              (BuildContext context, Object error, StackTrace? stackTrace) {
+          imageErrorBuilder: (context, error, stackTrace) {
             return Image.asset(
               'assets/images/image_not_found.jpg',
               fit: BoxFit.cover,

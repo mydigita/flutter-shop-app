@@ -10,6 +10,7 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   late String _userId;
   late Timer _authTimer;
+
   bool get isAuth {
     return token != '';
   }

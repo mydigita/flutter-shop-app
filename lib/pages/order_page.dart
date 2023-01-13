@@ -24,21 +24,6 @@ class _OrderPageState extends State<OrderPage> {
     super.initState();
   }
 
-  // var _isLoading = false;
-  // @override
-  // void initState() {
-  //   _isLoading = true;
-  //   Provider.of<Orders>(context, listen: false)
-  //       .fetchAndSetOrders()
-  //       .then((value) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   });
-
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -17,6 +17,7 @@ class AuthPage extends StatelessWidget {
     transformConfig.translate(-10.0);
     return Scaffold(
       appBar: AppBar(title: const Text('Flutter Shop')),
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Container(
@@ -89,7 +90,8 @@ class AuthCard extends StatefulWidget {
   State<AuthCard> createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
@@ -179,61 +181,65 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 10.0,
-      child: Container(
-        height: _authMode == AuthMode.signup ? 320 : 260,
+      child: AnimatedContainer(
+        height: _authMode == AuthMode.signup ? 320 : 290,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
         constraints: BoxConstraints(
-          minHeight: _authMode == AuthMode.signup ? 320 : 260,
+          maxHeight: _authMode == AuthMode.signup ? 320 : 290,
         ),
         width: deviceSize.width * 0.8,
         padding: const EdgeInsets.all(10.0),
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (val) {
-                  if (val!.isEmpty || !val.contains('@')) {
-                    return 'Invalid email';
-                  }
-                  return null;
-                },
-                onSaved: (val) {
-                  _authData['email'] = val!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                controller: _passwordController,
-                validator: (val) {
-                  if (val!.isEmpty || val.length < 7) {
-                    return 'Use 8 digit or longer password!';
-                  }
-                  return null;
-                },
-                onSaved: (val) {
-                  _authData['password'] = val!;
-                },
-              ),
-              if (_authMode == AuthMode.signup)
-                TextFormField(
-                  enabled: _authMode == AuthMode.signup,
-                  decoration:
-                      const InputDecoration(labelText: 'Confirm password'),
-                  obscureText: true,
-                  validator: _authMode == AuthMode.signup
-                      ? (val) {
-                          if (val != _passwordController.text) {
-                            return 'Password did not match';
-                          }
-                          return null;
-                        }
-                      : null,
-                ),
-              const SizedBox(
-                height: 20,
+              Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (val) {
+                      if (val!.isEmpty || !val.contains('@')) {
+                        return 'Invalid email';
+                      }
+                      return null;
+                    },
+                    onSaved: (val) {
+                      _authData['email'] = val!;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    controller: _passwordController,
+                    validator: (val) {
+                      if (val!.isEmpty || val.length < 7) {
+                        return 'Use 8 digit or longer password!';
+                      }
+                      return null;
+                    },
+                    onSaved: (val) {
+                      _authData['password'] = val!;
+                    },
+                  ),
+                  if (_authMode == AuthMode.signup)
+                    TextFormField(
+                      enabled: _authMode == AuthMode.signup,
+                      decoration:
+                          const InputDecoration(labelText: 'Confirm password'),
+                      obscureText: true,
+                      validator: _authMode == AuthMode.signup
+                          ? (val) {
+                              if (val != _passwordController.text) {
+                                return 'Password did not match';
+                              }
+                              return null;
+                            }
+                          : null,
+                    ),
+                ],
               ),
               if (_isLoading)
                 const CircularProgressIndicator()
